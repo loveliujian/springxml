@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="baseDao" class="com.liu.springxml.obj.BaseDao"/>
+	
+	<bean id="baseService" class="com.liu.springxml.obj.BaseService">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	
+	<bean id="student" class="com.liu.springxml.attribute.Student">
+		<!-- <property name="age">
+			<value>20</value>
+		</property> -->
+		<property name="age" value="20"/>
+		<property name="username" value="xiaoming"/>
+	</bean>
+	
+	<bean id="person" class="com.liu.springxml.constructor.Person">
+		<constructor-arg index="0" value="20"/>
+		<constructor-arg index="1" value="xiaoming"/>
+	</bean>
+	
+	<bean id="dog" class="com.liu.springxml.scope.Dog"/>
+	<bean id="cat" class="com.liu.springxml.scope.Cat" scope="prototype"/>
+	
+	<bean id="panda" class="com.liu.springxml.map.Panda">
+		<property name="map">
+			<map>
+				<entry key="weight" value="200"/>
+				<entry key="height" value="100"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="jdbcUtils" class="com.liu.springxml.properties.JdbcUtils">
+		<property name="properties">
+			<props>
+				<prop key="jdbc.driverClassName">com.mysql.jdbc.Driver</prop>
+				<prop key="jdbc.url">jdbc:mysql://localhost:3306/somnus?characterEncoding=utf-8</prop>
+				<prop key="jdbc.username">root</prop>
+				<prop key="jdbc.password">passw0rd</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+    	<!-- <property name="location" value="classpath:jdbc.properties"/> --> 
+    	<property name="locations">
+    		<list>
+    			<value>classpath:jdbc.properties</value>
+    			<value>classpath:jdbc2.properties</value>
+    		</list>
+    	</property> 
+	</bean>
+	<bean id="jdbcUtils2" class="com.liu.springxml.properties.JdbcUtils2">
+		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	
+	<bean id="lazy" class="com.liu.springxml.lazy.Lazy" lazy-init="false"/><!-- false 就是默认的 -->
+	<bean id="lazy2" class="com.liu.springxml.lazy.Lazy2" lazy-init="true"/>
+	
+	<bean id="mySqlDaoImpl" class="com.liu.springxml.autowired.MySqlDaoImpl"/>
+	<bean id="oracleDaoImpl" class="com.liu.springxml.autowired.OracleDaoImpl"/>
+	
+	<bean id="basicService" class="com.liu.springxml.autowired.BasicService">
+		<property name="basicDao" ref="mySqlDaoImpl"></property>
+	</bean>
+	
+	<!-- <bean id="basicService2" class="com.liu.springxml.autowired.BasicService2" autowire="byType"/> -->
+	
+	<bean class="com.liu.springxml.cycle.DataInitializer"  
+		init-method="initMethod" />
+</beans>
